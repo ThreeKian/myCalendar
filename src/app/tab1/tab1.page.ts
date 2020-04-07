@@ -45,6 +45,15 @@ export class Tab1Page {
     //初始化显示 当前年和月
     this.show_now();
   }
+  homing() {
+    this.dateValue = new Date();
+    let showDate = this.dateToMs(this.dateValue);
+    showDate = this.formatDate(showDate, 'yyyy-MM-dd hh:mm:ss');
+    // 获取当前时间的年月日时间
+    this.current_year = (showDate.toString()).substr(0, 4);
+    this.current_month = (showDate.toString()).substr(5, 2);
+    this.showTime();
+  }
 
   //初始化显示 当前年和月
   show_now() {
@@ -72,9 +81,6 @@ export class Tab1Page {
     let day = { day: '', choosed: false }
     for (let j = 1; j <= daysOfMonth; j++) {
       day.day = String(j);
-      if (j === this.active_day) {
-        day.choosed = true  // 修改日期选中状态
-      };
       this.days.push(day);
       day = { day: '', choosed: false }
     }
@@ -93,7 +99,7 @@ export class Tab1Page {
     // 获取当前时间的年月日时间
     const year = (this.showDate.toString()).substr(0, 4);
     const month = (this.showDate.toString()).substr(5, 2);
-    const date = (this.showDate.toString()).substr(8, 2);
+    const date = '01';
     const time = (this.showDate.toString()).substr(10, 9);
     this.dateValue = new Date(year + '-' + month + '-' + date + ' ' + time)
     // 判断月份，然后往前倒推一个月
@@ -101,12 +107,7 @@ export class Tab1Page {
       this.dateValue = new Date(this.dateValue.getTime() + 30 * 24 * 3600 * 1000);
     } else if (month === '01' || month === '03' || month === '05' || month === '07' || month === '08' || month === '10' ||
       month === '12') {
-      // this.dateValue = new Date(this.dateValue.getTime() + 31 * 24 * 3600 * 1000);
-      if (Number(date) > 30) {
-        this.dateValue = new Date(this.dateValue.getTime() + 30 * 24 * 3600 * 1000);
-      } else {
-        this.dateValue = new Date(this.dateValue.getTime() + Number(date) * 24 * 3600 * 1000);
-      }
+      this.dateValue = new Date(this.dateValue.getTime() + 31 * 24 * 3600 * 1000);
     } else if (month === '02') {
       // 判断闰年
       if (Number(year) % 4 === 0) {
@@ -135,31 +136,15 @@ export class Tab1Page {
     this.dateValue = new Date(year + '-' + month + '-' + date + ' ' + time)
     // 判断月份，然后往前倒推一个月
     if (month === '01' || month === '02' || month === '04' || month === '06' || month === '08' || month === '09' || month === '11') {
-      if (Number(date) > 30) {
-        this.dateValue = new Date(this.dateValue.getTime() - Number(date) * 24 * 3600 * 1000);
-      } else {
-        this.dateValue = new Date(this.dateValue.getTime() - 30 * 24 * 3600 * 1000);
-      }
+      this.dateValue = new Date(this.dateValue.getTime() - 31 * 24 * 3600 * 1000);
     } else if (month === '05' || month === '07' || month === '10' || month === '12') {
-      if (Number(date) > 30) {
-        this.dateValue = new Date(this.dateValue.getTime() - Number(date) * 24 * 3600 * 1000);
-      } else {
-        this.dateValue = new Date(this.dateValue.getTime() - 30 * 24 * 3600 * 1000);
-      }
+      this.dateValue = new Date(this.dateValue.getTime() - 30 * 24 * 3600 * 1000);
     } else if (month === '03') {
       // 判断闰年
       if (Number(year) % 4 === 0) {
-        if (Number(date) > 29) {
-          this.dateValue = new Date(this.dateValue.getTime() - Number(date) * 24 * 3600 * 1000);
-        } else {
-          this.dateValue = new Date(this.dateValue.getTime() - 29 * 24 * 3600 * 1000);
-        }
+        this.dateValue = new Date(this.dateValue.getTime() - 29 * 24 * 3600 * 1000);
       } else {
-        if (Number(date) > 28) {
-          this.dateValue = new Date(this.dateValue.getTime() - Number(date) * 24 * 3600 * 1000);
-        } else {
-          this.dateValue = new Date(this.dateValue.getTime() - 28 * 24 * 3600 * 1000);
-        }
+        this.dateValue = new Date(this.dateValue.getTime() - 28 * 24 * 3600 * 1000);
       }
     }
     this.showDate = this.dateToMs(this.dateValue);
